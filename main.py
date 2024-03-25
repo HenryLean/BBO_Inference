@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from srcPlus import Replicator
+from src import Replicator
 
 
 # Globals variables
