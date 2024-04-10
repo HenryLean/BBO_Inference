@@ -1,0 +1,33 @@
+{
+    "algArgs": {"act": [0, 0], 
+            "bounds": {"lb": [5, 5], "ub": [5, 5]}, 
+            "hypara": {"spsa": true, "4-point": 3.0, "kwsa": 1, "kwsa1": 1}}, 
+    "infArgs": {"est": 0, "var": 0, "hypara": {"constant": 0.05, "4-point": 3.0, "ordinal": null}}, 
+    "horizon": 1000000, 
+    "env": {
+        "gaussian": {
+            "quadratic": {
+                "mean_kwargs": {"L": [[1, 0], [-0.2, 1]], "b": [-1, 0.5], "intercept": 1}, 
+                "noise_kwargs": {"L": [[0.15, 0], [0.05, 0.1]], "b": [0, 0], "intercept": 1}
+            }, 
+            "periodic": {
+                "mean_kwargs": {"A": 0.5, "T": 4.0, "intercept": 0.5}, 
+                "noise_kwargs": {"A": 0.5, "T": 4.0, "intercept": 1.0}
+            }, 
+            "constant": {"mean_kwargs": {"const": 1}, "noise_kwargs": {"const": 1}}
+        }, 
+        "binary": {
+            "quadratic": {"mean_kwargs": {"L": [[1, 0], [-0.2, 1]], "b": [-1, 0.5], "intercept": 1}}, 
+            "logistic": {"mean_kwargs": {"L": [[1, 0], [-0.2, 1]], "b": [-1, 0.5]}}
+        }, 
+        "exponent": {
+            "quadratic": {"mean_kwargs": {"L": [[1, 0], [-0.2, 1]], "b": [-1, 0.5], "intercept": 1}}, 
+            "logistic": {"mean_kwargs": {"L": [[1, 0], [-0.2, 1]], "b": [-1, 0.5]}}
+        }
+    }, 
+    "pert_kwargs": {"a": 1, "b": 1, "c": 0.2}, 
+    "step_kwargs": {"a": 10, "b": 1, "c": 1}, 
+    "batch": {
+        "batch_type": "constant4", 
+        "batch_kwargs": {"constant": {"const": 20}, "constant4": {"consts": [18, 2]}}}
+}
