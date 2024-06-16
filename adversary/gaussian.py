@@ -2,7 +2,7 @@ import numpy as np
 
 
 class GaussianEnv(object):
-    def __init__(self, meanFn, noiseFn):
+    def __init__(self, meanFn, noiseFn, *args, **kwargs):
         self.mean = meanFn
         self.noise = noiseFn
 

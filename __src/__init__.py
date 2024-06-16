@@ -12,18 +12,20 @@ class BboInfer(object):
         # self.env = env(**fnDict)
         self.memory = Memory()
 
-    def run(self, env, perturb_fn, step_fn, batch_fn, N:int=1000, indices:list=None):
+    def run(self, env, perturb_fn, step_fn, batch_fn, N:int=1000, indices:list=None, randInit=False, **kwargs):
         '''
         batch_fn: batch size function
         n: total resources
         '''
         k = 0
+        if randInit:
+            self.actor.random_x0()
         indexes = indices if isinstance(indices, list) else list(range(N))
         while k < N:
             a = step_fn(k)
             b = batch_fn(k)
             c = perturb_fn(k)
-            self.actor.act, obs = self.actor.iterate(env, c, a, b)
+            self.actor.act, obs = self.actor.iterate(env, c, a, b, **kwargs)
             self.critic.update(obs)
             if k in indexes:
                 self.memory.decisions.append(tuple(self.actor.act))

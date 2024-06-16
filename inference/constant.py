@@ -1,12 +1,13 @@
 import numpy as np
 from __utils import Critic
 
+
 class ConstInfer(Critic):
     def __init__(self, est:float, var:float, rate:float=.05):
         super(ConstInfer, self).__init__(est, var)
         self.N_obs = 0
         self.rate = rate
-    
+
     def update(self, obs):
         mu = np.mean(np.concatenate(obs))
         s2 = np.var(np.concatenate(obs), ddof=1)

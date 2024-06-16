@@ -135,13 +135,12 @@ class Option(object):
         args = parser.parse_args(**kwargs)
         return args
 
-config_dir = "./input/test.json"
-output_dir = "./output/csv/"
+config_dir, output_dir = "./input/test.json", "./output/csv/"
 
 
 if __name__ == "__main__":
     begin_time = time.time()
-    r = 1000
+    r = 300
     for alg_name, inf_name, env_name in [("4-point", "4-point", "gaussian"), ("spsa", "constant", "gaussian")]:
     # output_dir+"{}_{}_{}_".format(alg_name, inf_name, env_name)
         multirun(r, alg_name, inf_name, env_name)

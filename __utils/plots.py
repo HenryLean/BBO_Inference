@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from scipy.stats import norm
 
 
-def cvg_plot(df, true, clevel=.9, tail=0, logIndex=True, plot_dir="./output/test/csv/figs/", *args, **kwargs):
+def cvg_plot(df, true, clevel=.9, tail=0, logIndex=True, ciType="both", plot_dir="", *args, **kwargs):
     mean = df.mean()[tail:]
     std = df.std()[tail:]
     alpha = (1 - clevel)/2
@@ -16,30 +16,46 @@ def cvg_plot(df, true, clevel=.9, tail=0, logIndex=True, plot_dir="./output/test
     plt.figure(**kwargs)
     plt.plot(indices, mean, label="mean estimate")
     plt.axhline(true, color="red", linestyle=":", label="true value")
-    plt.fill_between(indices, q_l, q_u, alpha=.3, label="empirical CI")
-    plt.fill_between(indices, mean-std*z, mean+std*z, alpha=.2, label="asymptotic CI")
+    if ciType in ["both", "asymp"]:
+        plt.fill_between(indices, mean-std*z, mean+std*z, alpha=.2, label="asymptotic CI")
+    if ciType in ["both", "empir"]:
+        plt.fill_between(indices, q_l, q_u, linestyle="-.", alpha=.1, label="empirical CI")
     plt.grid(True)
     plt.legend()
-    plt.savefig(plot_dir)
+    if plot_dir:
+        try:
+            plt.savefig(plot_dir)
+        except: pass
+    else:
+        plt.show()
+    plt.close()
 
 
-def cit_plot(stats, plot_dir, bins=15, *args, **kwargs):
+def cit_plot(stats, bins=15, plot_dir="", **kwargs):
     """
     histogram of t-statistics
     """
-    plt.figure(**kwargs)
-    xx = np.linspace(min(stats), max(stats), 100)
+    a, b = min(stats), max(stats)
+    xx = np.linspace((a-b)/2, (b-a)/2, 100)
     yy = norm.pdf(xx)
+    plt.figure(**kwargs)
     plt.hist(stats, density=True, bins=bins, label="histogram")
     plt.plot(xx, yy, linestyle="-.", label="std. normal")
     plt.axvline(0, color="red", linestyle=":")
     plt.grid(True)
     plt.legend()
-    plt.savefig(plot_dir)
+    if plot_dir:
+        try:
+            plt.savefig(plot_dir)
+        except: pass
+    else:
+        plt.show()
+    plt.close()
 
 
 def __get_float_acts(s): return np.array(list(map(float, re.findall('(-?\d+.\d+)', s))))
 
-def get_action_dist(act, optima:np.ndarray):
+
+def get_action_dist(act, optimiser:np.ndarray):
     x = __get_float_acts(act)
-    return np.linalg.norm(x - optima)
+    return np.linalg.norm(x - optimiser)
