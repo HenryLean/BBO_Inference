@@ -1,0 +1,58 @@
+{
+    "algArgs": {"act": [20, 20, 20, 20, 20, 20, 20, 20, 20, 20], 
+            "bounds": {"lb": [5, 5, 5, 5, 5, 5, 5, 5, 5, 5], "ub": [35, 35, 35, 35, 35, 35, 35, 35, 35, 35]}, 
+            "hypara": {"spsa": true, "spsa1s": true, "4-point": 3.0, "kwsa": 1, "kwsa1": 1}}, 
+    "infArgs": {"est": 0, "var": 0, "hypara": {"constant": 0.05, "4-point": 3.0, "ordinary": null, "multi_TS":[0.55, 0.666]}}, 
+    "horizon": 10000, 
+    "env": {
+        "gaussian": {
+            "quadratic": {
+                "mean_kwargs": {"L": [[1, 0], [-0.2, 1]], "b": [-1, 0.5], "intercept": -1}, 
+                "noise_kwargs": {"L": [[0.15, 0], [0.05, 0.1]], "b": [0, 0], "intercept": 1}
+            }, 
+            "periodic": {
+                "mean_kwargs": {"A": 0.5, "T": 4.0, "intercept": 0.5}, 
+                "noise_kwargs": {"A": 0.15, "T": 10.0, "intercept": 0.25}
+            }, 
+            "constant": {"mean_kwargs": {"const": 1}, "noise_kwargs": {"const": 1}},
+            "trid": {"mean_kwargs": {"scale":0.0015, "intercept":-0.9}}
+        }, 
+        "binary": {
+            "quadratic": {"mean_kwargs": {"A": [[-0.02125]], "b": [0.01825], "intercept": 0.0105}}, 
+            "logistic": {"mean_kwargs": {"L": [[1, 0], [-0.2, 1]], "b": [-1, 0.5]}},
+            "trid": {"mean_kwargs": {"scale":0.0015, "intercept":-0.9}}
+        }, 
+        "exponent": {
+            "quadratic": {"mean_kwargs": {"A": [[-0.02125]], "b": [0.01825], "intercept": 0.0105}}, 
+            "logistic": {"mean_kwargs": {"L": [[1, 0], [-0.2, 1]], "b": [-1, 0.5]}},
+            "trid": {"mean_kwargs": {"scale":0.0015, "intercept":-0.9}}
+        }, 
+        "pareto": {
+            "quadratic": {"mean_kwargs": {"A": [[-0.02125]], "b": [0.01825], "intercept": 0.0105}}, 
+            "logistic": {"mean_kwargs": {"L": [[1, 0], [-0.2, 1]], "b": [-1, 0.5]}},
+            "trid": {"mean_kwargs": {"scale":0.0015, "intercept":-0.9}}
+        },
+        "gamma": {
+            "quadratic": {"mean_kwargs": {"A": [[-0.02125]], "b": [0.01825], "intercept": 0.0105}}, 
+            "logistic": {"mean_kwargs": {"L": [[1, 0], [-0.2, 1]], "b": [-1, 0.5]}},
+            "trid": {"mean_kwargs": {"scale":0.0015, "intercept":-0.9}}
+        }, 
+        "lognorm": {
+            "quadratic": {"mean_kwargs": {"A": [[-0.02125]], "b": [0.01825], "intercept": 0.0105}}, 
+            "logistic": {"mean_kwargs": {"L": [[1, 0], [-0.2, 1]], "b": [-1, 0.5]}},
+            "constant": {"mean_kwargs": {"const": 1}, "noise_kwargs": {"const": 1}},
+            "periodic": {
+                "mean_kwargs": {"A": 0.5, "T": 4.0, "intercept": 1.5}, 
+                "noise_kwargs": {"A": 1.5, "T": 4.0, "intercept": 2.5}
+            },
+            "trid": {"mean_kwargs": {"scale":0.0015, "intercept":-0.9}}
+        }
+    }, 
+    "env_mean": "trid",
+    "env_noise": "constant",
+    "pert_kwargs": {"a": 1, "b": 1000, "c": 0.2}, 
+    "step_kwargs": {"a": 100, "b": 1, "c": 1}, 
+    "batch": {
+        "batch_type": "constant4", 
+        "batch_kwargs": {"constant": {"const": 20}, "constant4": {"consts": [45, 5]}}}
+}
