@@ -7,6 +7,7 @@ In addition, it collects and moves the run time data to a new location for easie
 
 
 
+import argparse
 import os
 import pandas as pd
 import time
@@ -21,18 +22,17 @@ algorithms = [
     "4point-multi"
 ]
 
-# var_methods = ["vanilla"]
+
 var_methods = ["batch", "iterative", "vanilla"]
 
-# envs = ["Bernoulli", "Gaussian", "Exponential", "Gamma", "Lognormal", "Pareto"]
+
 envs = ["PortfolioNormal"]
 
 file_names = {
     "distances": "distances.csv", 
     "estimates": "mu_estimates.csv", 
     "var_ests": "var_estimates.csv",
-    "gaps": "optimality_gaps.csv",
-    # "run_times": "durations.csv"
+    "gaps": "optimality_gaps.csv"
 }
 
 read_dir = "./results/"
@@ -69,19 +69,21 @@ def move(file_path, output_path):
     df = pd.read_csv(file_path, header=None)
     df.to_csv(output_path, index=None)
 
-read_dir = "./results/portfolio_positive/"
-# read_dir = "./results/portfolionormal/"
-write_dir = "./_positive_portfolio/"
-
-# read_dir = "./results/portfolio0/"
-# write_dir = "./_zero_portfolio/"
-
-# read_dir = "./results/"
-# write_dir = "./_toy_data/"
+read_dir = "./_cache/"
+write_dir = "./_results/"
 
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--read_dir", default=None, type=str)
+    parser.add_argument("--write_dir", default=None, type=str)
+
+    if parser.parse_args().read_dir is not None:
+        read_dir = parser.parse_args().read_dir
+    if parser.parse_args().write_dir is not None:
+        write_dir = parser.parse_args().write_dir
+
     args = []
     time_io = []
 
@@ -91,18 +93,15 @@ if __name__ == "__main__":
             for env in envs:
                 for key, f_name in file_names.items():
                     file_path = f"{read_dir}/{var_method}/{env}/{bbo}_{ssi}/{f_name}"
-                    # output_dir = f"{write_dir}/{var_method}/{env}/{bbo}_{ssi}/{key}/"
                     output_dir = f"{write_dir}/{var_method}/{bbo}_{ssi}/{key}/"
                     args.append((file_path, output_dir))
                 time_in = f"{read_dir}/{var_method}/{env}/{bbo}_{ssi}/durations.csv"
-                # time_out = f"{write_dir}/{var_method}/{env}/{bbo}_{ssi}/run_times.csv"
                 time_out = f"{write_dir}/{var_method}/{bbo}_{ssi}/run_times.csv"
                 time_io.append((time_in, time_out))
 
 
     with Pool(processes=5) as pool:
         pool.starmap(xform, args)
-        # pool.starmap(print, args)
     
 
     with Pool(processes=5) as pool:
