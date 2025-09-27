@@ -1,24 +1,19 @@
 import csv
 import os
 import time
-import numpy as np
 from functools import partial
 from multiprocessing import Pool, Manager
 
-import cvxpy as cp
-from scipy.stats import norm
-from src._utils.launcher import Option, launch
-from src._utils.env_fns import get_param
+from src._utils.launcher import Option, launch, opt_toy
 
 
-s_gap = 777
+s_gap = 111
 
 file_names = {
     "distances": "distances.csv", 
     "estimates": "mu_estimates.csv", 
     "var_ests": "var_estimates.csv",
-    "gaps": "optimality_gaps.csv",
-    "y_bars": "y_bars.csv"
+    "gaps": "optimality_gaps.csv"
 }
 
 
@@ -32,8 +27,7 @@ def launch_write(lock, bbo_name, ssi_name, env_name, alg_args, env_args, *, outp
         "distances": [seed/s_gap] + results.distances,
         "estimates": [seed/s_gap] + results.estimates,
         "var_ests": [seed/s_gap] + results.var_ests,
-        "gaps": [seed/s_gap] + results.regret,
-        "y_bars": [seed/s_gap] + results.y_bars,
+        "gaps": [seed/s_gap] + results.regret
     }
 
     with lock:
@@ -62,25 +56,6 @@ def launch_write(lock, bbo_name, ssi_name, env_name, alg_args, env_args, *, outp
 def wrap_seed(fn, seed): return fn(seed=seed)
 
 
-def opt_markowitz(verbose=False, **kwargs):
-    env_mean = np.array(kwargs["mean"])
-    env_cov = np.array(kwargs["cov"])
-    target = kwargs["target"]
-
-    w = cp.Variable(3)
-    objective = cp.Minimize(cp.quad_form(w, env_cov))
-    constraints = [
-        w @ env_mean >= target,
-        cp.sum(w) == 1,
-        w >= 0
-    ]
-    problem = cp.Problem(objective, constraints)
-    problem.solve(verbose=verbose)
-    theta_opt = get_param(w.value)
-    mean_opt = 1- norm.cdf((target - w.value @ env_mean) / np.sqrt(problem.value))
-    return theta_opt, mean_opt
-
-
 
 if __name__ == "__main__":
     begin_time = time.time()
@@ -90,20 +65,23 @@ if __name__ == "__main__":
 
     output_dir = f"{args.folder}/{args.env_name.lower()}/{args.bbo_name}_{args.ssi_name}/"
     os.makedirs(output_dir, exist_ok=True)
-    head_line = [i for i in range(1+args.len_iteration)] if args.rec_indexes is None else args.rec_indexes
-    head_line = ["seed"] + head_line
+    head_line = [i+1 for i in range(args.len_iteration)] if args.rec_indexes is None else args.rec_indexes
+    head_line = ["seed", 0] + head_line
     for key, f_name in file_names.items():
         with open(f"{output_dir}/{f_name}", "w", newline="") as f:
             writer = csv.writer(f)
             writer.writerow(head_line)
 
-    theta_opt, mean_opt = opt_markowitz(**args.env_args)
+
+    # theta_opt, mean_opt = opt_markowitz(**args.env_args)
+    theta_opt, mean_opt = opt_toy(**args.env_args)
 
     # Multiprocess
     manager = Manager()
     lock = manager.RLock()
 
-    launch_mp = partial(launch_write, lock, args.bbo_name, args.ssi_name, args.env_name, args.alg_args, args.env_args, output_dir=output_dir, N=args.len_iteration, rec_indexes=args.rec_indexes, optimizer=theta_opt, opt_val=mean_opt, descent=False, est_var_method=args.est_var_method)
+    launch_mp = partial(launch_write, lock, args.bbo_name, args.ssi_name, args.env_name, args.alg_args, args.env_args, output_dir=output_dir, N=args.len_iteration, rec_indexes=args.rec_indexes, optimizer=theta_opt, opt_val=mean_opt, descent=True, est_var_method=args.est_var_method)
+
 
     params = [(launch_mp, s_gap*i) for i in range(args.num_replication)]
 

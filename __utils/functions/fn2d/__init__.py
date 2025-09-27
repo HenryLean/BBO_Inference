@@ -1,1 +1,0 @@
-from .Bohachevsky import fnBohachevsky

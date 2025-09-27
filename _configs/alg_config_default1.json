@@ -1,0 +1,9 @@
+{
+    "init": [[0, 0], 0, 1],
+    "bounds": [-2, 2],
+    "hyperparam": 3,
+    "const_rate": 0.05,
+    "multi_rates": [0.666, 0.55],
+    "perturb_args": {"shift": 1, "enume": 1, "power": 0.2},
+    "step_args": {"shift": 1000, "enume": 50, "power": 1}
+}
