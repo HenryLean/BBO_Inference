@@ -67,14 +67,6 @@ class BaseBBOSSI(BaseGD):
                     regret=abs(performance-opt_val),
                     y_bar = y_bar
                 )
-                # self.memory.decisions.append(np.array(self.action))
-                # self.memory.estimates.append(self.infer.est)
-                # self.memory.var_ests.append(self.infer.var)
-                # distance = np.linalg.norm(np.array(self.action) - optimizer)
-                # performance = self.env.get_performance(self.action)
-                # self.memory.distances.append(distance)
-                # self.memory.performance.append(performance)
-                # self.memory.regret.append(abs(performance-opt_val))
             k += 1
 
 

@@ -13,7 +13,8 @@ file_names = {
     "distances": "distances.csv", 
     "estimates": "mu_estimates.csv", 
     "var_ests": "var_estimates.csv",
-    "gaps": "optimality_gaps.csv"
+    "gaps": "optimality_gaps.csv",
+    "y_bars": "y_bars.csv"
 }
 
 
@@ -27,7 +28,8 @@ def launch_write(lock, bbo_name, ssi_name, env_name, alg_args, env_args, *, outp
         "distances": [seed/s_gap] + results.distances,
         "estimates": [seed/s_gap] + results.estimates,
         "var_ests": [seed/s_gap] + results.var_ests,
-        "gaps": [seed/s_gap] + results.regret
+        "gaps": [seed/s_gap] + results.regret,
+        "y_bars": [seed/s_gap] + results.y_bars,
     }
 
     with lock:
