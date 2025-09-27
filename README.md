@@ -18,6 +18,8 @@ git clone https://github.com/HenryLean/BBO_Inference.git
 cd BBO_Inference
 ```
 
+This project depends on my toolkit `simpot`. Make sure it's in your Python path, for details please go to its [webpage](https://github.com/HenryLean/simopt).
+
 ## Usage
 
 Run an experiment:
