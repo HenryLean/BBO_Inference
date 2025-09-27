@@ -18,7 +18,9 @@ git clone https://github.com/HenryLean/BBO_Inference.git
 cd BBO_Inference
 ```
 
-This project depends on my toolkit `simpot`. Make sure it's in your Python path, for details please go to its [webpage](https://github.com/HenryLean/simopt).
+This project depends on `cvxpy`, see the [homepage](https://www.cvxpy.org/) for more details.
+This project also depends on my toolkit `simpot`, for details please go to its [webpage](https://github.com/HenryLean/simopt). 
+Make sure the dependencies are in your Python path.
 
 ## Usage
 
