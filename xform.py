@@ -1,3 +1,12 @@
+"""
+This script is used to transform the raw result files into a more analysis-friendly format.
+It computes the mean and standard deviation of the results across replications and saves them into new CSV files.
+It also extracts specific columns for histogram plotting.
+In addition, it collects and moves the run time data to a new location for easier access.
+"""
+
+
+
 import os
 import pandas as pd
 import time
