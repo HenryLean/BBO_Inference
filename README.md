@@ -80,10 +80,6 @@ If you find this implementation useful, please consider citing the original pape
 
 Contributions are welcome! Please open issues or submit pull requests.
 
-## License
-
-This project is licensed under the MIT License.
-
 ## Contact
 
 For questions or suggestions, please open an issue on GitHub.
